@@ -11,14 +11,16 @@ public class Counter {
     }
 
     public void increment() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        value.set(value.get() + 1);
+
     }
 
     public void decrement() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        value.set(value.get() - 1);
     }
 
     public IntegerProperty counterProperty() {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-}
+        // Ritorna l'oggetto Property stesso.
+        // Questo permette di chiamare .addListener() o .bind() dall'esterno.
+        return this.value;
+    }}

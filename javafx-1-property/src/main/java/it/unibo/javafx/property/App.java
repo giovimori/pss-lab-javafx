@@ -1,6 +1,7 @@
 package it.unibo.javafx.property;
 
 import javafx.application.Application;
+import javafx.geometry.Pos; // Importante per centrare gli elementi
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -12,10 +13,39 @@ public class App extends Application {
     @Override
     public void start(final Stage primaryStage) throws Exception {
         primaryStage.setTitle("Controls Exercise!");
+
+        // 1. Setup del layout principale (VBox)
         final VBox mainPane = new VBox();
+        mainPane.setAlignment(Pos.CENTER); // Centra tutto verticalmente e orizzontalmente
+
         final Counter counter = new Counter();
-        // TODO aggiungere gli elementi come descritto da readme
-        primaryStage.setScene(new Scene(mainPane));
+
+        // 2. Creazione della GUI
+        final Label display = new Label();
+        final Button incrementBtn = new Button("+");
+        final Button decrementBtn = new Button("-");
+
+        // 3. Impostare la larghezza minima come richiesto
+        incrementBtn.setMinWidth(100);
+        decrementBtn.setMinWidth(100);
+
+        // 4. Creazione di un sotto-layout orizzontale per i bottoni
+        final HBox buttonsPane = new HBox();
+        buttonsPane.setAlignment(Pos.CENTER);
+        buttonsPane.setSpacing(10);
+        buttonsPane.getChildren().addAll(incrementBtn, decrementBtn);
+
+        // 5. Aggiunta degli elementi al pannello principale
+        mainPane.getChildren().addAll(display, buttonsPane);
+
+        // 6. Logica dei pulsanti (Event Handling)
+        incrementBtn.setOnAction(e -> counter.increment());
+        decrementBtn.setOnAction(e -> counter.decrement());
+
+        //data binding
+        display.textProperty().bind(counter.counterProperty().asString());
+
+        primaryStage.setScene(new Scene(mainPane, 300, 200));
         primaryStage.show();
     }
 
@@ -25,3 +55,5 @@ public class App extends Application {
         }
     }
 }
+
+
