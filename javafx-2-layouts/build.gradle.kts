@@ -15,35 +15,35 @@ val javaFXModules = listOf(
     "graphics"
 )
 
-val supportedPlatforms = listOf("linux", "mac", "win") // All required for OOP
+// !!! PUNTO CRUCIALE 1 !!!
+// Rimuovi "mac" (che è per Intel) e metti "mac-aarch64" (per il tuo M1/M2/M3)
+val supportedPlatforms = listOf("mac-aarch64", "linux", "win")
 
 dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.8")
 
-    // Example library: Guava. Add what you need (and remove Guava if you don't use it)
-    // implementation("com.google.guava:guava:28.1-jre")
+    // !!! PUNTO CRUCIALE 2 !!!
+    // Usa la versione 17.0.8 (la 15 è troppo vecchia per il tuo Mac)
+    val javaFxVersion = "17.0.8"
 
-    // JavaFX: comment out if you do not need them
-    val javaFxVersion = 15
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
     }
 
-    val jUnitVersion = "6.0.1"
+    // Aggiornamento JUnit
+    val jUnitVersion = "5.10.0"
     testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
 }
 
 tasks.withType<Test> {
-    // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
 }
 
-
 application {
-    // Define the main class for the application
+    // CAMBIARE QUI: 'property' -> 'layouts'
     mainClass.set("it.unibo.javafx.layouts.App\$Main")
 }

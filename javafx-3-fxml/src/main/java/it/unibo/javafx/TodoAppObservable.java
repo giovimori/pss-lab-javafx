@@ -1,20 +1,18 @@
-package it.unibo.javafx;
+package it.unibo.javafx.layouts;
 
-import javafx.beans.property.ListProperty;
+import javafx.collections.ObservableList;
+import java.util.List; // O il tipo di dato che userai per i task
 
-/**
- * An observable version of the todo application.
- */
-public interface TodoAppObservable extends TodoApp {
-    /**
-     * Returns the list of todos as a property.
-     * @return the list of todos as a property
-     */
-    ListProperty<Todo> todosProperty();
+// Assumiamo che i task siano rappresentati da semplici Stringhe per ora.
+public interface TodoAppObservable {
 
-    /**
-     * Returns the list of completed todos as a property.
-     * @return the list of completed todos as a property
-     */
-    ListProperty<Todo> completedTodosProperty();
+    /** Restituisce la lista osservabile di tutti i task. */
+    ObservableList<String> getTasks();
+
+    /** Aggiunge un nuovo task. */
+    void addTask(String description);
+
+    /** Rimuove un task dalla lista. */
+    void removeTask(String description);
+
 }

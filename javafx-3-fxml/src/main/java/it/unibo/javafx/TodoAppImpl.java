@@ -1,49 +1,44 @@
-package it.unibo.javafx;
+package it.unibo.javafx.layouts;
 
-import javafx.beans.property.ListProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
-import java.util.List;
+public class TodoAppImpl implements TodoAppObservable {
 
-public class TodoAppImpl implements TodoAppObservable  {
-    private final ListProperty<Todo> todos; // ho una lista di todos, ma osservabile
-    private final ListProperty<Todo> completedTodos;
+    // Il cuore del modello: una lista che notifica i cambiamenti
+    private final ObservableList<String> taskList = FXCollections.observableArrayList();
 
+    /**
+     * Il costruttore può inizializzare la lista con dati di esempio.
+     */
     public TodoAppImpl() {
-        // creo una lista osservabile di todos e di completedTodos
-        this.todos = new SimpleListProperty<>(FXCollections.observableArrayList());
-        this.completedTodos = new SimpleListProperty<>(FXCollections.observableArrayList());
+        taskList.add("Configurare FXML e Controller");
+        taskList.add("Aggiungere i metodi in TodoAppImpl");
     }
 
+    /**
+     * @return La lista osservabile dei task, come richiesto dall'interfaccia.
+     */
     @Override
-    public ListProperty<Todo> todosProperty() {
-        return todos;
+    public ObservableList<String> getTasks() {
+        return taskList;
     }
 
+    /**
+     * Aggiunge un task se non è vuoto.
+     */
     @Override
-    public ListProperty<Todo> completedTodosProperty() {
-        return completedTodos;
+    public void addTask(String description) {
+        if (description != null && !description.trim().isEmpty()) {
+            taskList.add(description.trim());
+        }
     }
 
+    /**
+     * Rimuove un task.
+     */
     @Override
-    public Todo addNewTodo(String content) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    // usa remove per eliminare un todo dalla lista dei todos e aggiungerlo alla lista dei completedTodos
-    @Override
-    public void completeTodo(Todo todo) {
-        throw new UnsupportedOperationException("Not implemented yet");
-    }
-
-    @Override
-    public List<Todo> getTodos() {
-        return todos.get();
-    }
-
-    @Override
-    public List<Todo> getCompletedTodos() {
-        return completedTodos.get();
+    public void removeTask(String description) {
+        taskList.remove(description);
     }
 }

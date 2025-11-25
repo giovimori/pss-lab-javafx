@@ -1,17 +1,6 @@
 plugins {
-    // Apply the java plugin to add support for Java
     java
-
-    // Apply the application plugin to add support for building a CLI application
-    // You can run your app via task "run": ./gradlew run
     application
-    id("org.javamodularity.moduleplugin") version "2.0.0"
-    /*
-     * Adds tasks to export a runnable jar.
-     * In order to create it, launch the "shadowJar" task.
-     * The runnable jar will be found in build/libs/projectname-all.jar
-     */
-    id("com.gradleup.shadow") version "9.2.2"
 }
 
 repositories {
@@ -26,35 +15,34 @@ val javaFXModules = listOf(
     "graphics"
 )
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(25))
-    }
-}
-
-val javaFxVersion = 25
-val supportedPlatforms = listOf("linux", "mac", "win")
+// !!! PUNTO CRUCIALE 1 !!!
+// Rimuovi "mac" (che è per Intel) e metti "mac-aarch64" (per il tuo M1/M2/M3)
+val supportedPlatforms = listOf("mac-aarch64", "linux", "win")
 
 dependencies {
     // Suppressions for SpotBugs
     compileOnly("com.github.spotbugs:spotbugs-annotations:4.9.8")
-    val jUnitVersion = "6.0.1"
-    // JUnit API and testing engine
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
+
+    // !!! PUNTO CRUCIALE 2 !!!
+    // Usa la versione 17.0.8 (la 15 è troppo vecchia per il tuo Mac)
+    val javaFxVersion = "17.0.8"
+
     for (platform in supportedPlatforms) {
         for (module in javaFXModules) {
             implementation("org.openjfx:javafx-$module:$javaFxVersion:$platform")
         }
     }
+
+    // Aggiornamento JUnit
+    val jUnitVersion = "5.10.0"
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$jUnitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$jUnitVersion")
 }
 
 tasks.withType<Test> {
-    // Enables JUnit 5 Jupiter module
     useJUnitPlatform()
 }
 
 application {
-    // Define the main class for the application
-    mainClass.set("it.unibo.samplejavafx.base.AppLauncher")
+    mainClass.set("it.unibo.javafx.fxml.App\$Main")
 }
