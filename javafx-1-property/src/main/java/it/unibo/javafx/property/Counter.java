@@ -19,6 +19,10 @@ public class Counter {
         value.set(value.get() - 1);
     }
 
+    public void reset(){
+        value.set(0);
+    }
+
     public IntegerProperty counterProperty() {
         // Ritorna l'oggetto Property stesso.
         // Questo permette di chiamare .addListener() o .bind() dall'esterno.

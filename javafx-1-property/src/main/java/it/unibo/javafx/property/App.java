@@ -21,26 +21,32 @@ public class App extends Application {
         final Counter counter = new Counter();
 
         // 2. Creazione della GUI
+        final Label titoloLeft = new Label("Contatore:");
+
         final Label display = new Label();
         final Button incrementBtn = new Button("+");
         final Button decrementBtn = new Button("-");
+        final Button resetBtn = new Button("reset");
+
 
         // 3. Impostare la larghezza minima come richiesto
         incrementBtn.setMinWidth(100);
         decrementBtn.setMinWidth(100);
+        resetBtn.setMinWidth(100);
 
         // 4. Creazione di un sotto-layout orizzontale per i bottoni
-        final HBox buttonsPane = new HBox();
+        final HBox buttonsPane = new HBox(10);
         buttonsPane.setAlignment(Pos.CENTER);
         buttonsPane.setSpacing(10);
         buttonsPane.getChildren().addAll(incrementBtn, decrementBtn);
 
         // 5. Aggiunta degli elementi al pannello principale
-        mainPane.getChildren().addAll(display, buttonsPane);
+        mainPane.getChildren().addAll(titoloLeft,display, buttonsPane, resetBtn);
 
         // 6. Logica dei pulsanti (Event Handling)
         incrementBtn.setOnAction(e -> counter.increment());
         decrementBtn.setOnAction(e -> counter.decrement());
+        resetBtn.setOnAction(e -> counter.reset());
 
         //data binding
         display.textProperty().bind(counter.counterProperty().asString());
